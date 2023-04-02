@@ -10,14 +10,19 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    public Animator animeCtrl;
+
     private float horizontal;
-    private float speed = 8f;
-    private float jumpingPower = 18f;
+    private float speed = 4f;
+    private float jumpingPower = 6f;
     private bool isFackingRight = true;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        
         
     }
 
@@ -25,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+
+       
 
         if (!isFackingRight && horizontal > 0f)
         {
@@ -67,5 +74,13 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
+
+        animeCtrl.SetFloat("Speed", Mathf.Abs(horizontal));
+    }
+
+    public void Shoot(InputAction.CallbackContext context)
+    {
+        //Send the message to the Animator to activate the trigger parameter named "Shoot"
+        animeCtrl.SetTrigger("Shoot");
     }
 }
