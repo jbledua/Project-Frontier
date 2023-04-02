@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Compilation;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -71,6 +72,11 @@ public class Movement : MonoBehaviour
     {
         Debug.Log(collision.gameObject.tag);   
         if (collision.gameObject.tag == "Ground") { isGrounded = true; }
-        
+        if (collision.gameObject.tag == "Platform") { isGrounded = true; }
+
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Platform") { isGrounded = false; }
     }
 }

@@ -11,6 +11,7 @@ public class Boss : MonoBehaviour
     public enum attacks { Beam, Spray};
     public attacks attackType = attacks.Beam;
     private int attackPhase = 0;
+    private int attackWay = 3;
     public GameObject[] attackProjectiles;
 
     private List<GameObject> ActiveProjectiles = new List<GameObject>();
@@ -64,7 +65,8 @@ public class Boss : MonoBehaviour
                     {
                         Debug.Log("Shooting");
                         GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisISdumb[j] * 2f), Quaternion.Euler(0, 0, 45 * j));
-                        bullet.transform.localScale = Vector3.one * 2f;
+                        bullet.GetComponent<Bullet>().isPlayers = false;
+                        bullet.transform.localScale = Vector3.one * 5f;
                         bullet.GetComponent<Rigidbody2D>().velocity = thisISdumb[j] * 50;
                         ActiveProjectiles.Add(bullet);
                     }
@@ -76,18 +78,34 @@ public class Boss : MonoBehaviour
             {
                 if (attackPhase == 0)
                 {
-                    if (MoveStartLeft()) { attackPhase = 1; }
+                    int i = Random.Range(1, 3);
+                    Debug.Log("Attack Phase: " + i);
+                    if (attackWay == 3)
+                    {
+                        if (player.transform.position.x > 0) { attackWay = 1; }
+                        else { attackWay = 0; }
+                    }
+                    if (attackWay == 0)
+                    {
+                        if (MoveStartLeft()) { attackPhase = i; }
+                    }
+                    if (attackWay == 1)
+                    {
+                        
+                        if (MoveStartRight()) { attackPhase = i; }
+                    }
                 }
                 if (attackPhase == 1)
                 {
                     MoveToCenter();
-                    attackPhase = 2;
+                    attackPhase = 3;
                     if (isMoving)
                     {
                         for (int j = 0; j < 32; j++)
                         {
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3.down * (j * 0.25f)), Quaternion.Euler(0, 0, 0));
+                            bullet.GetComponent<Bullet>().isPlayers = false;
                             bullet.transform.localScale = Vector3.one * 2f;
                             bullet.GetComponent<Rigidbody2D>().velocity = Vector2.down * 50;
                             ActiveProjectiles.Add(bullet);
@@ -97,12 +115,43 @@ public class Boss : MonoBehaviour
                     {
                         hasAttacked = true;
                         attackPhase = 0;
+                        attackWay = 3;
                         attackType = attacks.Spray;
                     }
                 }
-                if (attackPhase == 2)
+                if(attackPhase == 2)
+                {
+                    if(attackWay == 0) { MoveStartRight(); }
+                    if(attackWay == 1) { MoveStartLeft(); }
+
+                    attackPhase = 4;
+                    if (isMoving)
+                    {
+                        for (int j = 0; j < 32; j++)
+                        {
+                            Debug.Log("Shooting");
+                            GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3.down * (j * 0.25f)), Quaternion.Euler(0, 0, 0));
+                            bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.transform.localScale = Vector3.one * 2f;
+                            bullet.GetComponent<Rigidbody2D>().velocity = Vector2.down * 50;
+                            ActiveProjectiles.Add(bullet);
+                        }
+                    }
+                    else
+                    {
+                        hasAttacked = true;
+                        attackPhase = 0;
+                        attackWay = 3;
+                        attackType = attacks.Spray;
+                    }
+                }
+                if (attackPhase == 3)
                 {
                     attackPhase = 1;
+                }
+                if (attackPhase == 4)
+                {
+                    attackPhase = 2; //oh what i would give for a goto!
                 }
             }
         }
@@ -169,7 +218,7 @@ public class Boss : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-       if (collision.gameObject.CompareTag("Bullet"))
+       if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().isPlayers == true)
             {
                 ani.SetTrigger("Damage");
                 if(state== states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; }

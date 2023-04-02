@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float timeAlive;
-    public bool isFriendly = true;
+    public bool isPlayers = true;
 
     Collider2D c;
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        if (isFriendly && collision.gameObject.CompareTag("Enemy"))
+        if (isPlayers && collision.gameObject.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<EnemyStats>().Hit(10);
         }
