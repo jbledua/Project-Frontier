@@ -12,6 +12,7 @@ public class Boss : MonoBehaviour
     public attacks attackType = attacks.Beam;
     private int attackPhase = 0;
     private int attackWay = 3;
+    private int numberOfAttacks = 5;
     public GameObject[] attackProjectiles;
 
     private List<GameObject> ActiveProjectiles = new List<GameObject>();
@@ -27,7 +28,18 @@ public class Boss : MonoBehaviour
     public bool isMoving = false;
     private Vector3 initialPos = Vector3.zero;
     Animator ani;
+    public Vector2[] thisISdumb =
+                    {
+                    Vector2.up,
+                    new Vector2(0.5f,0.5f),
+                    Vector2.right,
+                    new Vector2(0.5f,-0.5f),
+                    Vector2.down,
+                    new Vector2(-0.5f, -0.5f),
+                    Vector2.left,
+                    new Vector2(-0.5f, 0.5f)
 
+                };
     void Start()
     {
         ani = gameObject.GetComponent<Animator>();
@@ -45,22 +57,16 @@ public class Boss : MonoBehaviour
         if (state.Equals(states.Attacking) && !hasAttacked)
         {
             Debug.Log("Attacking");
+            
             if (attackType.Equals(attacks.Spray))
             {
                 if (MoveToCenter() && !isMoving)
                 {
-                    Vector2[] thisISdumb =
+                    //I wasn't gonna do some cool math trick to get the cardinals!
+                    for(int i = 0; i < thisISdumb.Length; i++)
                     {
-                    Vector2.up,
-                    new Vector2(0.5f,0.5f),
-                    Vector2.right,
-                    new Vector2(0.5f,-0.5f),
-                    Vector2.down,
-                    new Vector2(-0.5f, -0.5f),
-                    Vector2.left,
-                    new Vector2(-0.5f, 0.5f)
-
-                };
+                        thisISdumb[i] = rotate(thisISdumb[i], 0.12f);
+                    }
                     for (int j = 0; j < 8; j++)
                     {
                         Debug.Log("Shooting");
@@ -70,8 +76,10 @@ public class Boss : MonoBehaviour
                         bullet.GetComponent<Rigidbody2D>().velocity = thisISdumb[j] * 50;
                         ActiveProjectiles.Add(bullet);
                     }
-                    attackType = attacks.Beam;
-                    hasAttacked = true;
+                    numberOfAttacks--;
+                    if (numberOfAttacks <= 0) { hasAttacked = true; attackType = (attacks)Random.Range(0, 2); numberOfAttacks = Random.Range(0, 3); }
+                   
+                    
                 }
             }
             else if (attackType.Equals(attacks.Beam))
@@ -116,6 +124,7 @@ public class Boss : MonoBehaviour
                         hasAttacked = true;
                         attackPhase = 0;
                         attackWay = 3;
+                        
                         attackType = attacks.Spray;
                     }
                 }
@@ -142,6 +151,7 @@ public class Boss : MonoBehaviour
                         hasAttacked = true;
                         attackPhase = 0;
                         attackWay = 3;
+                        
                         attackType = attacks.Spray;
                     }
                 }
@@ -224,5 +234,12 @@ public class Boss : MonoBehaviour
                 if(state== states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; }
             }
     
+    }
+    public static Vector2 rotate(Vector2 v, float delta)
+    {
+        return new Vector2(
+            v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+            v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+        );
     }
 }

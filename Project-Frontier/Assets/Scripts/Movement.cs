@@ -61,10 +61,10 @@ public class Movement : MonoBehaviour
             timeInJump += Time.deltaTime;
             if(timeInJump <= jumpTime)
             {
-                rb.transform.position += Vector3.up / 100;
+                rb.transform.position += Vector3.up * 5 * Time.deltaTime;
             }
             if(timeInJump > jumpTime && isGrounded == false) {
-                rb.transform.position -= Vector3.up / 100;
+                rb.transform.position -= Vector3.up * 5 * Time.deltaTime;
             }
         }
     }
