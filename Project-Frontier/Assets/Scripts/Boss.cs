@@ -28,6 +28,7 @@ public class Boss : MonoBehaviour
     public bool isMoving = false;
     private Vector3 initialPos = Vector3.zero;
     Animator ani;
+    //I wasn't gonna do some cool math trick to get the cardinals!
     public Vector2[] thisISdumb =
                     {
                     Vector2.up,
@@ -60,26 +61,70 @@ public class Boss : MonoBehaviour
             
             if (attackType.Equals(attacks.Spray))
             {
+                attackWay = Random.Range(0, 3);
                 if (MoveToCenter() && !isMoving)
                 {
-                    //I wasn't gonna do some cool math trick to get the cardinals!
-                    for(int i = 0; i < thisISdumb.Length; i++)
+                    if (attackWay == 0)
                     {
-                        thisISdumb[i] = rotate(thisISdumb[i], 0.12f);
+                        for (int i = 0; i < thisISdumb.Length; i++)
+                        {
+                            thisISdumb[i] = rotate(thisISdumb[i], 0.12f);
+                        }
+                        for (int j = 0; j < 8; j++)
+                        {
+                            Debug.Log("Shooting");
+                            GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisISdumb[j] * 2f), Quaternion.Euler(0, 0, 45 * j));
+                            bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.transform.localScale = Vector3.one * 5f;
+                            bullet.GetComponent<Rigidbody2D>().velocity = thisISdumb[j] * 50;
+                            ActiveProjectiles.Add(bullet);
+                        }
+                        numberOfAttacks--;
+                        if (numberOfAttacks <= 0) { hasAttacked = true; attackType = (attacks)Random.Range(0, 2); numberOfAttacks = Random.Range(0, 3); attackWay = 3; }
                     }
-                    for (int j = 0; j < 8; j++)
+                    if(attackWay == 1)
                     {
-                        Debug.Log("Shooting");
-                        GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisISdumb[j] * 2f), Quaternion.Euler(0, 0, 45 * j));
-                        bullet.GetComponent<Bullet>().isPlayers = false;
-                        bullet.transform.localScale = Vector3.one * 5f;
-                        bullet.GetComponent<Rigidbody2D>().velocity = thisISdumb[j] * 50;
-                        ActiveProjectiles.Add(bullet);
+                        Vector2[] thisIS =
+                        {
+                        Vector2.up,
+                        Vector2.right,
+                        Vector2.down,
+                        Vector2.left
+
+                            };
+                        for (int j = 0; j < 4; j++)
+                        {
+                            Debug.Log("Shooting");
+                            GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisIS[j] * 2f), Quaternion.Euler(0, 0, 0));
+                            bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.transform.localScale = new Vector3(1,4,1) * 5f;
+                            bullet.GetComponent<Rigidbody2D>().velocity = thisIS[j] * 50;
+                            ActiveProjectiles.Add(bullet);
+                        }
+                        hasAttacked = true; attackType = (attacks)Random.Range(0, 2); numberOfAttacks = Random.Range(0, 3); attackWay = 3;
                     }
-                    numberOfAttacks--;
-                    if (numberOfAttacks <= 0) { hasAttacked = true; attackType = (attacks)Random.Range(0, 2); numberOfAttacks = Random.Range(0, 3); }
-                   
-                    
+                    if (attackWay == 2)
+                    {
+                        Vector2[] thisIS =
+                         {
+                        Vector2.up,
+                        Vector2.right,
+                        Vector2.down,
+                        Vector2.left
+
+                            };
+                        for (int j = 0; j < 4; j++)
+                        {
+                            Debug.Log("Shooting");
+                            GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisIS[j] * 2f), Quaternion.Euler(0, 0, 0));
+                            bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.transform.localScale = new Vector3(4, 1, 1) * 5f;
+                            bullet.GetComponent<Rigidbody2D>().velocity = thisIS[j] * 50;
+                            ActiveProjectiles.Add(bullet);
+                        }
+                        hasAttacked = true; attackType = (attacks)Random.Range(0, 2); numberOfAttacks = Random.Range(0, 3); attackWay = 3;
+                    }
+
                 }
             }
             else if (attackType.Equals(attacks.Beam))
