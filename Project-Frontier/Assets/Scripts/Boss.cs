@@ -6,7 +6,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     
-    public enum states { Passive, Active, Attacking};
+    public enum states { Passive, Active, Attacking, Passive_1, Passive_2};
     public states state;
     public enum attacks { Beam, Spray};
     public attacks attackType = attacks.Beam;
@@ -15,9 +15,14 @@ public class Boss : MonoBehaviour
     private int numberOfAttacks = 5;
     public GameObject[] attackProjectiles;
 
+    private List<GameObject> minions = new List<GameObject>();
+    public GameObject minion;
+    public GameObject shield;
     private List<GameObject> ActiveProjectiles = new List<GameObject>();
 
-    public GameObject player;
+    GameObject player;
+    EnemyStats stats;
+    Animator ani;
 
     private float stateDuration = 1.0f;
     public float timeUntilStateChange = 0.0f;
@@ -27,7 +32,7 @@ public class Boss : MonoBehaviour
     public float elaspedtime = 0.0f;
     public bool isMoving = false;
     private Vector3 initialPos = Vector3.zero;
-    Animator ani;
+    
     //I wasn't gonna do some cool math trick to get the cardinals!
     public Vector2[] thisISdumb =
                     {
@@ -43,11 +48,12 @@ public class Boss : MonoBehaviour
                 };
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
+        stats = gameObject.GetComponent<EnemyStats>();
         ani = gameObject.GetComponent<Animator>();
         state = states.Passive;
         gameObject.transform.position = initialPos;
-        
-        
+
     }
 
     // Update is called once per frame
@@ -226,7 +232,34 @@ public class Boss : MonoBehaviour
                 state = states.Active;
                 timeUntilStateChange = stateDuration;
             }
+        if (state == states.Passive_2)
+        {
+            Debug.Log(minions.Count);
+            for(int i = 0; i < minions.Count; i++)
+            {
+                if (minions[i] == null) { minions.Remove(minions[i]); }
+            }
+            if(minions.Count <= 0)
+            {
+                ani.SetInteger("phase", 1);
+                ani.SetTrigger("anger");
+                state = states.Attacking;
+                shield.SetActive(false);
+            }
 
+         }
+         if(state == states.Passive_1)
+        {
+            if (MoveToCenterTop()) {
+                
+                shield.SetActive(true);
+                while(minions.Count < 5)
+                {
+                    minions.Add(Instantiate(minion, new Vector3(Random.Range(-16, 16), -7, 0), Quaternion.identity));
+                }
+                state = states.Passive_2;
+            }
+        }
 
         
     }
@@ -276,7 +309,13 @@ public class Boss : MonoBehaviour
        if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().isPlayers == true)
             {
                 ani.SetTrigger("Damage");
+                stats.Hit(collision.gameObject.GetComponent<Bullet>().dmg);
                 if(state== states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; }
+                if(stats.getHp() < (stats.getMaxHP()/2)) { 
+                state = states.Passive_1;
+                
+                }
+                if(stats.getHp() <= 0) { Destroy(gameObject); }
             }
     
     }
@@ -287,4 +326,6 @@ public class Boss : MonoBehaviour
             v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
         );
     }
+
+
 }

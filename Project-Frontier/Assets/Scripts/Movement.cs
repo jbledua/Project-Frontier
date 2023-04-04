@@ -50,7 +50,7 @@ public class Movement : MonoBehaviour
             ani.SetTrigger("walk");
             rb.transform.position += Vector3.left * speed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.W) && isGrounded == true)
+        if (Input.GetKey(KeyCode.W) && isJumping == false)
         {
             isGrounded = false;
             isJumping= true;
@@ -66,6 +66,7 @@ public class Movement : MonoBehaviour
             if(timeInJump > jumpTime && isGrounded == false) {
                 rb.transform.position -= Vector3.up * 5 * Time.deltaTime;
             }
+            if(timeInJump > jumpTime && isGrounded == true) { isJumping = false; }
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
@@ -73,10 +74,5 @@ public class Movement : MonoBehaviour
         Debug.Log(collision.gameObject.tag);   
         if (collision.gameObject.tag == "Ground") { isGrounded = true; }
         if (collision.gameObject.tag == "Platform") { isGrounded = true; }
-
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Platform") { isGrounded = false; }
     }
 }
