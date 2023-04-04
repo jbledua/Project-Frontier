@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - Platform
   - Shield
+  - Trigger
+  - Edge
   layers:
   - Default
   - TransparentFX

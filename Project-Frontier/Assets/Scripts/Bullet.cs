@@ -10,7 +10,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float timeAlive;
-    public bool isPlayers = true;
+    public bool isPlayers = false;
 
     public int dmg = 5;
 

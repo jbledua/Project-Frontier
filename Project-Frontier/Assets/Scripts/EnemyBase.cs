@@ -27,7 +27,6 @@ public class EnemyBase : MonoBehaviour
 
     private static int Iframes = 50; 
     private int UpdatesSinceDmg = Iframes;
-    // Start is called before the first frame update
     private float elaspedtime = 0f;
     public Quaternion initialRot = Quaternion.identity;
     void Start()
@@ -41,7 +40,6 @@ public class EnemyBase : MonoBehaviour
         stats.setMaxHP(10);
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -104,7 +102,7 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
-        if (movingTo.x == gameObject.transform.position.x || (movingFrom == Vector3.zero && movingTo == Vector3.zero))
+        if (movingTo.x == gameObject.transform.position.x || (movingFrom == Vector3.zero && movingTo == Vector3.zero) || timeSinceLastMove > 5)
         {
             timeSinceLastMove = 0;
             float horizontal = player.transform.position.x - gameObject.transform.position.x;
@@ -128,7 +126,7 @@ public class EnemyBase : MonoBehaviour
             movingFrom = gameObject.transform.position;
             Debug.Log(movingFrom);
         }
-        if (movingTo.x != gameObject.transform.position.x)
+        if (movingTo.x != gameObject.transform.position.x )
         {
             float f = Vector3.Lerp(movingFrom, movingTo, timeSinceLastMove/10).x;
             Vector3 newPos = new Vector3(f, gameObject.transform.position.y, 0);

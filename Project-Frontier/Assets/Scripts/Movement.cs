@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour
     private float jumpTime = 1.0f;
     private float timeInJump = 0.0f;
     private bool isJumping = false;
-
+    private bool isFalling = false;
     public bool isGrounded = false;
 
     public float speed = 1.0f;
@@ -61,21 +61,25 @@ public class Movement : MonoBehaviour
         if(isJumping)
         {
             timeInJump += Time.deltaTime;
-            if(timeInJump <= jumpTime)
+            if(timeInJump <= jumpTime && !isFalling)
             {
                 rb.transform.position += Vector3.up * 5 * Time.deltaTime;
             }
             if(timeInJump > jumpTime && isGrounded == false) {
-                rb.transform.position -= Vector3.up * 5 * Time.deltaTime;
+                isFalling = true;
             }
             if(timeInJump > jumpTime && isGrounded == true) { isJumping = false; }
+        }
+        if (isFalling && !isGrounded)
+        {
+            rb.transform.position -= Vector3.up * 5 * Time.deltaTime;
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.tag);   
-        if (collision.gameObject.tag == "Ground") { isGrounded = true; }
-        if (collision.gameObject.tag == "Platform") { isGrounded = true; }
+        if (collision.gameObject.tag == "Ground") { isGrounded = true; isFalling = false; }
+        if (collision.gameObject.tag == "Platform") { isGrounded = true; isFalling = false; }
     }
-   
+
 }

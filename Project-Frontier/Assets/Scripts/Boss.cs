@@ -32,10 +32,14 @@ public class Boss : MonoBehaviour
     public float timeUntilStateChange = 0.0f;
     private bool hasAttacked = false;
 
+    private static int Iframes = 50;
+    private int UpdatesSinceDmg = Iframes;
+    private float UpdatesSinceAttack = 10f;
 
     public float elaspedtime = 0.0f;
     public bool isMoving = false;
     private Vector3 initialPos = Vector3.zero;
+    private Quaternion initialRot = Quaternion.identity;
     
     //I wasn't gonna do some cool math trick to get the cardinals!
     public Vector2[] thisISdumb =
@@ -264,8 +268,25 @@ public class Boss : MonoBehaviour
                 state = states.Passive_2;
             }
         }
+        if (stats.getHp() <= 0 && Quaternion.identity == initialRot)
+        {
+            initialRot = gameObject.transform.rotation;
+            deathAni();
+            ani.SetTrigger("death");
+            ani.SetInteger("phase", 2);
+            return;
+        }
+        if (initialRot != Quaternion.identity)
+        {
+            if (deathAni()) { Destroy(gameObject); }
 
-        
+        }
+
+    }
+    private void FixedUpdate()
+    {
+        if (UpdatesSinceDmg <= Iframes) UpdatesSinceDmg++;
+        if (ani.GetInteger("phase") == 1 && !shield.active) { UpdatesSinceAttack += Time.deltaTime; }
     }
     bool MoveStartLeft()
     {
@@ -306,20 +327,27 @@ public class Boss : MonoBehaviour
 
         return false;
     }
+    private bool deathAni()
+    {
+        if (gameObject.transform.rotation == Quaternion.Euler(0, 0, 120)) { return true; }
+        elaspedtime += Time.deltaTime;
+        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(new Vector3(0, 0, 120)), elaspedtime/8);
+        return false;
 
+    }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-       if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().isPlayers == true)
+       if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().isPlayers == true && UpdatesSinceDmg > Iframes)
             {
+                UpdatesSinceDmg = 0;
                 ani.SetTrigger("Damage");
                 stats.Hit(collision.gameObject.GetComponent<Bullet>().dmg);
                 if(state== states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; }
-                if(stats.getHp() < (stats.getMaxHP()/2)) { 
+                if(stats.getHp() < (stats.getMaxHP()/2) && UpdatesSinceAttack >= 10f) {
                 state = states.Passive_1;
-                
+                UpdatesSinceAttack = 0;
                 }
-                if(stats.getHp() <= 0) { Destroy(gameObject); }
             }
     
     }
