@@ -13,13 +13,13 @@ public class Movement : MonoBehaviour
     SpriteRenderer ren2d;
 
     public float jp_height = 1.0f;
-
-    private float jumpTime = 1.0f;
-    private float timeInJump = 0.0f;
-    private bool isJumping = false;
-    private bool isFalling = false;
+    private int curFrames = 0;
+    public int jumpFrames = 10;
     public bool isGrounded = false;
-
+    public bool isJumping = false;
+    public float elaspedTime = 0f;
+    private Vector2 initialPos = Vector2.zero;
+    private Vector2 finalPos = Vector2.zero;
     public float speed = 1.0f;
     void Start()
     {
@@ -52,34 +52,34 @@ public class Movement : MonoBehaviour
             ani.SetTrigger("walk");
             rb.transform.position += Vector3.left * speed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.W) && isJumping == false)
+        
+    }
+    private void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.W) && isGrounded)
         {
-            isGrounded = false;
-            isJumping= true;
-            timeInJump = 0f;
+            isJumping = true;
         }
-        if(isJumping)
-        {
-            timeInJump += Time.deltaTime;
-            if(timeInJump <= jumpTime && !isFalling)
-            {
-                rb.transform.position += Vector3.up * 5 * Time.deltaTime;
-            }
-            if(timeInJump > jumpTime && isGrounded == false) {
-                isFalling = true;
-            }
-            if(timeInJump > jumpTime && isGrounded == true) { isJumping = false; }
-        }
-        if (isFalling && !isGrounded)
-        {
-            rb.transform.position -= Vector3.up * 5 * Time.deltaTime;
+        if(isJumping) {
+            Debug.Log("jump");
+            jump(); 
+            curFrames++; 
+            if(curFrames >= jumpFrames) { isJumping = false; curFrames = 0; }
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.tag);   
-        if (collision.gameObject.tag == "Ground") { isGrounded = true; isFalling = false; }
-        if (collision.gameObject.tag == "Platform") { isGrounded = true; isFalling = false; }
+        if (collision.gameObject.tag == "Ground") { isGrounded = true;}
+        if (collision.gameObject.tag == "Platform") { isGrounded = true;}
     }
-
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground") { isGrounded = false;}
+        if (collision.gameObject.tag == "Platform") { isGrounded = false;}
+    }
+    private void jump()
+    {
+        rb.AddForce(Vector3.up * jp_height * Time.deltaTime, ForceMode2D.Impulse);
+    }
 }
