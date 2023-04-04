@@ -7,7 +7,9 @@ using Unity.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-
+//this was my solution to dealing with rotation and physics! IT's DUMB af
+//but it works! also why 6 cubes follow the player sprite (they are barrel locations!) never finished this class!
+//All i needed was something that could shoot.
 public class Shooting : MonoBehaviour
 {
     public GameObject bullet;

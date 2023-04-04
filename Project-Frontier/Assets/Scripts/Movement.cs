@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEditor.Compilation;
 using UnityEngine;
 
+//Not adding anything else to this class, Feel free to replace everything here!
+//I have hated dealing with this janky physics system and Transform.translate since unity 3.0!
 public class Movement : MonoBehaviour
 {
     Animator ani;
@@ -75,4 +77,5 @@ public class Movement : MonoBehaviour
         if (collision.gameObject.tag == "Ground") { isGrounded = true; }
         if (collision.gameObject.tag == "Platform") { isGrounded = true; }
     }
+   
 }

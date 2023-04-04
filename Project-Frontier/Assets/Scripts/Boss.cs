@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+//This bundle of joy is the class that controls boss behavior
+//Really should be split into like 3 classes
+//Would have been alot easier if i had just done that in the first place but alas we are here
+//Honestly the stupidity in this class is so bad i recommened not looking at it.
 public class Boss : MonoBehaviour
 {
     

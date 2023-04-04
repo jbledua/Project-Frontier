@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//This class doesn't even need to be a monobehaviour!
+//but it wouldn't work right if i tried to treat it as a normal c# class!
+//I hate c#
 public class EnemyStats : MonoBehaviour
 {
     public int CurrentHP;

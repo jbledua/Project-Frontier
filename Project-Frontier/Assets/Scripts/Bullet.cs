@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Bullet class, bullets will delete themselves after a certain amount of time or on collision
+//Add animations or whatever!
+//would be really easy to set a delay to the destroy command and run an animations
+//or even better create a onBulletHit prefab and spawn that on collision
+
 public class Bullet : MonoBehaviour
 {
     private float timeAlive;

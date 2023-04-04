@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+//This is a base class for an enemy sprite
+//Will detect damage, and move towards player mindlessly
+//Preferably attacks should be held in seperate class
+//or better yet passed as first class functions to some sort of attack manager! but thats too fancy
 public class EnemyBase : MonoBehaviour
 {
     Animator ani;
