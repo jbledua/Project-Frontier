@@ -46,7 +46,15 @@ public class EnemyBase : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        moveToPlayer();
+        if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 15) //Sprites will only agro if within 15 units
+        {
+            moveToPlayer();
+        }
+        else
+        {
+            movingFrom = Vector3.zero;
+            movingTo = Vector3.zero;
+        }
         if (UpdatesSinceDmg < Iframes) UpdatesSinceDmg++;
         if(stats.getHp() <= 0 && Quaternion.identity == initialRot)
         {
