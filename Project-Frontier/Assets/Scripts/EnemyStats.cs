@@ -10,7 +10,7 @@ public class EnemyStats : MonoBehaviour
     public int CurrentHP;
     public int MaxHP;
     public int Defense;
-
+    public int OnImpactDMG = 1;
     public int getHp() { return CurrentHP; }
     public void setHp(int hp) { if (hp < MaxHP) { CurrentHP = hp; } }
     public void setMaxHP(int hp) { MaxHP = hp; }   
@@ -18,8 +18,8 @@ public class EnemyStats : MonoBehaviour
     public void setDefense(int defense) { Defense = defense; }
     public void Hit(int damage)
     {
-        CurrentHP -= (damage - Defense);
+        if (damage - Defense <= 0) CurrentHP -= 1;
+        else CurrentHP -= (damage - Defense);
     }
-
 
 }

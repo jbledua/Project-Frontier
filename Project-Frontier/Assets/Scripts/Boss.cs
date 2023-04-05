@@ -89,6 +89,7 @@ public class Boss : MonoBehaviour
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisISdumb[j] * 2f), Quaternion.Euler(0, 0, 45 * j));
                             bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.GetComponent<Bullet>().dmg = 4;
                             bullet.transform.localScale = Vector3.one * 5f;
                             bullet.GetComponent<Rigidbody2D>().velocity = thisISdumb[j] * 50;
                             ActiveProjectiles.Add(bullet);
@@ -111,6 +112,7 @@ public class Boss : MonoBehaviour
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisIS[j] * 2f), Quaternion.Euler(0, 0, 0));
                             bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.GetComponent<Bullet>().dmg = 5;
                             bullet.transform.localScale = new Vector3(1,4,1) * 5f;
                             bullet.GetComponent<Rigidbody2D>().velocity = thisIS[j] * 50;
                             ActiveProjectiles.Add(bullet);
@@ -132,6 +134,7 @@ public class Boss : MonoBehaviour
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3)(thisIS[j] * 2f), Quaternion.Euler(0, 0, 0));
                             bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.GetComponent<Bullet>().dmg = 5;
                             bullet.transform.localScale = new Vector3(4, 1, 1) * 5f;
                             bullet.GetComponent<Rigidbody2D>().velocity = thisIS[j] * 50;
                             ActiveProjectiles.Add(bullet);
@@ -173,6 +176,7 @@ public class Boss : MonoBehaviour
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3.down * (j * 0.25f)), Quaternion.Euler(0, 0, 0));
                             bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.GetComponent<Bullet>().dmg = 1;
                             bullet.transform.localScale = Vector3.one * 2f;
                             bullet.GetComponent<Rigidbody2D>().velocity = Vector2.down * 50;
                             ActiveProjectiles.Add(bullet);
@@ -200,6 +204,7 @@ public class Boss : MonoBehaviour
                             Debug.Log("Shooting");
                             GameObject bullet = Instantiate(attackProjectiles[0], this.transform.position + (Vector3.down * (j * 0.25f)), Quaternion.Euler(0, 0, 0));
                             bullet.GetComponent<Bullet>().isPlayers = false;
+                            bullet.GetComponent<Bullet>().dmg = 1;
                             bullet.transform.localScale = Vector3.one * 2f;
                             bullet.GetComponent<Rigidbody2D>().velocity = Vector2.down * 50;
                             ActiveProjectiles.Add(bullet);
