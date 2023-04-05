@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestShip.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Level 1.unity
+    guid: f076ad20e041c494b9f85ce00ead2f44
+  - enabled: 1
+    path: Assets/Scenes/Level 2.unity
+    guid: 070ca8c0413b16040aac0e7c599696e6
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: d08ff0e57650c904a8be6374ae7e42b1
+  - enabled: 1
+    path: Assets/Scenes/Level 4.unity
+    guid: a21ca6f736d81574d8c4b9fb561be1d1
+  - enabled: 1
+    path: Assets/Scenes/Level 5.unity
+    guid: 8709b2202ecd8a24dbaa734f013f9199
+  - enabled: 1
+    path: Assets/Scenes/Game Over.unity
+    guid: b175234204b0283478fa6bd379e23e71
   m_configObjects: {}

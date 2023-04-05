@@ -1,86 +1,172 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public Transform groundCheck;
+    public float moveSpeed = 5f;
+    public float jumpForce = 7f;
     public LayerMask groundLayer;
-
-    public Animator animeCtrl;
-
-    private float horizontal;
-    private float speed = 4f;
-    private float jumpingPower = 6f;
-    private bool isFackingRight = true;
+    public Transform groundCheck;
+    public float checkRadius = 0.1f;
 
 
+    public GameObject spawnPoint;
 
-    // Start is called before the first frame update
+    private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private float moveInput;
+    private bool isGrounded;
+    private bool jumpRequest;
+
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletSpeed = 10f;
+
+    public float respawnDelay = 1f;
+
     void Start()
     {
-        
-        
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Move player to spawn point
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.transform.position;
+        }
+
+        OnPlayerKilled();
     }
 
-    // Update is called once per frame
-    void Update()
+    // New method for handling player death
+    public void OnPlayerKilled()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        StartCoroutine(RespawnAfterDelay(respawnDelay));
+    }
+
+    private IEnumerator RespawnAfterDelay(float delay)
+    {
+        // Disable player control and visuals
+        GetComponent<PlayerInput>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        // Call the OnSpawn method of the Spawner
+        Spawner spawner = spawnPoint.GetComponent<Spawner>();
+        if (spawner != null)
+        {
+            spawner.OnSpawn();
+        }
+
+        // Wait for the delay
+        yield return new WaitForSeconds(delay);
+
+        // Move player to the active spawn point
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.transform.position;
+        }
+
+        // Enable player control and visuals
+        GetComponent<PlayerInput>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
 
        
-
-        if (!isFackingRight && horizontal > 0f)
-        {
-            Flip();
-        }
-        else if (isFackingRight && horizontal < 0f) 
-        {
-            Flip();
-        }
     }
 
-    public void Jump(InputAction.CallbackContext context)
+    void Update()
     {
-        // Check if jump was pressed player is on the ground
-        if(context.performed && isGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
+        // Check if the player is on the ground using the Ground Check object
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
-        // Check if jump was released and the player is still going up
-        if(context.canceled & rb.velocity.y > 0f)
+
+        // Update the animator parameters
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
+        animator.SetBool("IsGrounded", isGrounded);
+
+        // Flip the sprite based on the movement direction
+        if (moveInput > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            spriteRenderer.flipX = false;
+        }
+        else if (moveInput < 0)
+        {
+            spriteRenderer.flipX = true;
         }
     }
 
-    private bool isGrounded()
+    void FixedUpdate()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        // Move the player left or right
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+
+        // Execute jump if requested
+        if (jumpRequest)
+        {
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            jumpRequest = false;
+        }
+    }
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            FireBullet();
+        }
     }
 
-    private void Flip()
+        public void OnMove(InputAction.CallbackContext context)
     {
-        isFackingRight = !isFackingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        transform.localScale = localScale;
+        moveInput = context.ReadValue<Vector2>().x;
     }
 
-    public void Move(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
-        horizontal = context.ReadValue<Vector2>().x;
-
-        animeCtrl.SetFloat("Speed", Mathf.Abs(horizontal));
+        if (context.started && isGrounded)
+        {
+            jumpRequest = true;
+        }
     }
 
-    public void Shoot(InputAction.CallbackContext context)
+    private void FireBullet()
     {
-        //Send the message to the Animator to activate the trigger parameter named "Shoot"
-        animeCtrl.SetTrigger("Shoot");
+        // Instantiate bullet
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+
+        // Set bullet velocity
+        float direction = spriteRenderer.flipX ? -1 : 1;
+        bulletRb.velocity = new Vector2(direction * bulletSpeed, 0);
+
+        // Play firing animation
+        animator.SetTrigger("Fire");
+
+        // Destroy bullet after some time
+        Destroy(bullet, 2f);
+    }
+
+    // New method for updating spawn point
+    public void UpdateSpawnPoint(GameObject newSpawnPoint)
+    {
+        if (newSpawnPoint != null)
+        {
+            spawnPoint = newSpawnPoint;
+        }
+    }
+
+    // New method for handling player interaction
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            LevelExit[] levelExits = FindObjectsOfType<LevelExit>();
+            foreach (LevelExit exit in levelExits)
+            {
+                exit.Interact();
+            }
+        }
     }
 }
