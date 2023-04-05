@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     // New method for handling player death
     public void OnPlayerKilled()
     {
+
         StartCoroutine(RespawnAfterDelay(respawnDelay));
     }
 
@@ -68,13 +69,15 @@ public class PlayerMovement : MonoBehaviour
         if (spawnPoint != null)
         {
             transform.position = spawnPoint.transform.position;
+            
         }
 
         // Enable player control and visuals
+
         GetComponent<PlayerInput>().enabled = true;
         GetComponent<SpriteRenderer>().enabled = true;
+        
 
-       
     }
 
     void Update()

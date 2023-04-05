@@ -15,7 +15,11 @@ public class PlayerBase : MonoBehaviour
     {
         if (stats.getHp() <= 0)
         {
+            stats.setHp(stats.MaxHP);
+            Debug.Log(stats.MaxHP);
+            Debug.Log(stats.CurrentHP);
             gameObject.GetComponent<PlayerMovement>().OnPlayerKilled();
+            
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class HealthBarController : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class HealthBarController : MonoBehaviour
         if(stats.getHp() <= 0)
         {
             HealthBar.SetActive(false);
+         
+        }
+        if(stats.getHp() > 0)
+        {
+            HealthBar.SetActive(true);
         }
         HealthBar.transform.localScale = new Vector2(Normalize(stats.getMaxHP(),stats.getHp()), HealthBar.transform.localScale.y);
     }
