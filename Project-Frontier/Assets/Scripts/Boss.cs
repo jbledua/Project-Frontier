@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
     public float timeUntilStateChange = 0.0f;
     private bool hasAttacked = false;
 
-    private static int Iframes = 90;
+    private static int Iframes = 30;
     private int UpdatesSinceDmg = Iframes;
     private float UpdatesSinceAttack = 10f;
 

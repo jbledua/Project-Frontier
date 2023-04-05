@@ -12,6 +12,7 @@ TagManager:
   - Shield
   - Trigger
   - Edge
+  - HealthBar
   layers:
   - Default
   - TransparentFX

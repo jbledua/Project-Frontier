@@ -46,7 +46,7 @@ public class Shooting : MonoBehaviour
             {
                 i = Instantiate(bullet, left.transform.position, left.transform.rotation);
                 i.GetComponent<Bullet>().isPlayers = true;
-                i.GetComponent<Bullet>().dmg = 5;
+                i.GetComponent<Bullet>().dmg = 10;
                 i.transform.localScale= Vector3.one;
                 Rigidbody2D i_b = i.GetComponent<Rigidbody2D>();
                 i_b.velocity = Vector3.left * 50;
@@ -56,7 +56,7 @@ public class Shooting : MonoBehaviour
             {
                 i = Instantiate(bullet, right.transform.position, right.transform.rotation);
                 i.GetComponent<Bullet>().isPlayers = true;
-                i.GetComponent<Bullet>().dmg = 5;
+                i.GetComponent<Bullet>().dmg = 10;
                 i.transform.localScale = Vector3.one;
                 Rigidbody2D i_b = i.GetComponent<Rigidbody2D>();
                 i_b.velocity = Vector3.right * 50;

@@ -36,7 +36,6 @@ public class Bullet : MonoBehaviour
         if (isPlayers && collision.gameObject.CompareTag("Enemy"))
         {
             //I like this method for interacting with other scripts probably a smarter/less hacky way to do this.
-            collision.gameObject.GetComponent<EnemyStats>().Hit(10);
             Destroy(this.gameObject);
         }
         if (!isPlayers && collision.gameObject.CompareTag("Player"))
