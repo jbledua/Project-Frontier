@@ -348,7 +348,7 @@ public class Boss : MonoBehaviour
                 UpdatesSinceDmg = 0;
                 ani.SetTrigger("Damage");
                 stats.Hit(collision.gameObject.GetComponent<Bullet>().dmg);
-                if(state== states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; }
+                if(state == states.Passive) { state = states.Active; timeUntilStateChange = stateDuration; gameObject.GetComponent<AudioSource>().Play(); }
                 if(stats.getHp() < (stats.getMaxHP()/2) && UpdatesSinceAttack >= 10f) {
                 state = states.Passive_1;
                 UpdatesSinceAttack = 0;
