@@ -24,6 +24,10 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         timeAlive += Time.deltaTime;
+        if(timeAlive >= 0.25f)
+        {
+            Destroy(gameObject);
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
