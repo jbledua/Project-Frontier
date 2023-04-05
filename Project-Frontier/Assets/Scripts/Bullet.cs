@@ -24,15 +24,10 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         timeAlive += Time.deltaTime;
-        if (timeAlive > 0.25f) { Destroy(gameObject); }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (timeAlive > 0.025f && (collision.gameObject.CompareTag("Walls") || collision.gameObject.CompareTag("Ground")))
-        {
-            Destroy(this.gameObject);
-        }
         if (isPlayers && collision.gameObject.CompareTag("Enemy"))
         {
             //I like this method for interacting with other scripts probably a smarter/less hacky way to do this.
