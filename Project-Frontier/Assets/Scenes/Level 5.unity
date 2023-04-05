@@ -10287,7 +10287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2471059940239823707, guid: 3ad068e1d08e88a4a97d56432934204f, type: 3}
       propertyPath: nextLevelSceneName
-      value: Game Over
+      value: Boss Level
       objectReference: {fileID: 0}
     - target: {fileID: 4165584289614441355, guid: 3ad068e1d08e88a4a97d56432934204f, type: 3}
       propertyPath: m_RootOrder

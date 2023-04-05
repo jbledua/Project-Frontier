@@ -323,7 +323,7 @@ MonoBehaviour:
   groundCheck: {fileID: 5460347447865413728}
   checkRadius: 1
   spawnPoint: {fileID: 0}
-  bulletPrefab: {fileID: 7582458241325375976, guid: 6632f6dd747290a4ea33250ee9e4ec9e, type: 3}
+  bulletPrefab: {fileID: 2040338245508342543, guid: e8981330ea61c684298da215176c9e6c, type: 3}
   firePoint: {fileID: 6209103929405855224}
   bulletSpeed: 10
   respawnDelay: 1
