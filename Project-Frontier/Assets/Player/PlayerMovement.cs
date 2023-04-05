@@ -117,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
             FireBullet();
         }
     }
-    
+
         public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>().x;
@@ -136,10 +136,7 @@ public class PlayerMovement : MonoBehaviour
         // Instantiate bullet
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        //These will set the isplayer to true so player can damage enemys
-        //also sets damage! was planning to add a charged shot
-        bullet.GetComponent<Bullet>().isPlayers = true;
-        bullet.GetComponent<Bullet>().dmg = 10;
+
         // Set bullet velocity
         float direction = spriteRenderer.flipX ? -1 : 1;
         bulletRb.velocity = new Vector2(direction * bulletSpeed, 0);
@@ -150,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
         // Destroy bullet after some time
         Destroy(bullet, 2f);
     }
-    
+
     // New method for updating spawn point
     public void UpdateSpawnPoint(GameObject newSpawnPoint)
     {
