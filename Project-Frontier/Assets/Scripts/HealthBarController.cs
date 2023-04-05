@@ -27,6 +27,7 @@ public class HealthBarController : MonoBehaviour
     {
         if(stats.getHp() <= 0)
         {
+            HealthBar.transform.localScale = new Vector2(Normalize(stats.getMaxHP(), stats.getMaxHP()), HealthBar.transform.localScale.y);
             HealthBar.SetActive(false);
          
         }

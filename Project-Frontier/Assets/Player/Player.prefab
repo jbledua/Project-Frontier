@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1142709885659587920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147149815664242662}
+  m_Layer: 0
+  m_Name: Fire Point (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2147149815664242662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142709885659587920}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.25, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5460347447721703469}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1382328641667834148
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +61,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5460347447721703469}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4769689891883819596
 SpriteRenderer:
@@ -123,6 +154,7 @@ Transform:
   m_Children:
   - {fileID: 5460347447865413728}
   - {fileID: 6209103929405855224}
+  - {fileID: 2147149815664242662}
   - {fileID: 2328302338790507914}
   - {fileID: 4565274216291326675}
   m_Father: {fileID: 0}
@@ -414,6 +446,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   bulletPrefab: {fileID: 2040338245508342543, guid: e8981330ea61c684298da215176c9e6c, type: 3}
   firePoint: {fileID: 6209103929405855224}
+  firePoint_x: {fileID: 2147149815664242662}
   bulletSpeed: 10
   respawnDelay: 1
 --- !u!114 &4654937849802994747
@@ -517,7 +550,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5460347447721703469}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5073961780799194458
 SpriteRenderer:

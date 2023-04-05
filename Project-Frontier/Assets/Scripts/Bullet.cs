@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     private float timeAlive;
     public bool isPlayers = false;
 
-    public int dmg = 5;
+    public int dmg = 12;
 
     // Start is called before the first frame update
     void Start()

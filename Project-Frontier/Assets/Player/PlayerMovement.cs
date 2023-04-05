@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject bulletPrefab;
     public Transform firePoint;
+    public Transform firePoint_x;
     public float bulletSpeed = 10f;
 
     public float respawnDelay = 1f;
@@ -136,9 +137,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void FireBullet()
     {
-        // Instantiate bullet
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        GameObject bullet;
+        Rigidbody2D bulletRb;
+        if (spriteRenderer.flipX)
+        {
+            // Instantiate bullet
+           bullet = Instantiate(bulletPrefab, firePoint_x.position, firePoint_x.rotation);
+           bulletRb = bullet.GetComponent<Rigidbody2D>();
+        }
+        else
+        {
+            bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            bulletRb = bullet.GetComponent<Rigidbody2D>();
+        }
+        
 
         // Set bullet velocity
         float direction = spriteRenderer.flipX ? -1 : 1;
