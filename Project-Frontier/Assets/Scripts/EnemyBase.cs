@@ -25,7 +25,7 @@ public class EnemyBase : MonoBehaviour
     private float timeInJump = 0f;
 
 
-    private static int Iframes = 50; 
+    private static int Iframes = 25; 
     private int UpdatesSinceDmg = Iframes;
     private float elaspedtime = 0f;
     public Quaternion initialRot = Quaternion.identity;

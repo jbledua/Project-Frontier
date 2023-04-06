@@ -30,11 +30,13 @@ public class PlayerBase : MonoBehaviour
     {
         if (collision.collider.CompareTag("Bullet") && UpdatesSinceDmg >= Iframes)
         {
-            Bullet b = collision.collider.GetComponent<Bullet>();
+           UpdatesSinceDmg = 0;
+           Bullet b = collision.collider.GetComponent<Bullet>();
             if (!b.isPlayers) { stats.Hit(b.dmg); }
         }
         if (collision.collider.CompareTag("Enemy"))
         {
+            UpdatesSinceDmg = 0;
             stats.Hit(collision.collider.GetComponent<EnemyStats>().OnImpactDMG);
         }
     }
